@@ -1,0 +1,50 @@
+# Build the image
+make build
+
+# Run the pipeline once
+make process
+
+# Run with continuous monitoring
+make run-with-watcher
+
+# View logs
+make logs
+
+make build        # Build Docker image
+make process      # One-time processing
+make run          # Continuous service
+make logs         # View logs
+
+
+# Set environment variables
+export INPUT_DIR=/path/to/excel/files
+export OUTPUT_DIR=/path/to/parquet/output
+export LOG_LEVEL=DEBUG
+
+# Run with custom settings
+docker-compose up -d
+
+
+# In docker-compose.yml, uncomment:
+environment:
+  - CRON_SCHEDULE=0 */6 * * *  # Every 6 hours
+
+# Run with code hot-reloading
+make dev
+
+project/
+├── Dockerfile
+├── Dockerfile.watcher
+├── docker-compose.yml
+├── docker-compose.override.yml
+├── requirements.txt
+├── entrypoint.sh
+├── file_watcher.py
+├── excel_parquet_pipeline.py
+├── Makefile
+├── .dockerignore
+├── data/
+│   ├── input/     # Excel files go here
+│   └── output/    # Parquet files created here
+├── logs/          # Application logs
+└── state/         # Processing state files

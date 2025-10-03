@@ -1,0 +1,84 @@
+#!/bin/bash
+
+set -e
+
+# Function to handle shutdown gracefully
+cleanup() {
+    echo "Shutting down pipeline..."
+    exit 0
+}
+
+# Trap SIGTERM and SIGINT
+trap cleanup SIGTERM SIGINT
+
+# Set default values
+INPUT_DIR="${INPUT_DIR:-/etl/data/input}"
+OUTPUT_DIR="${OUTPUT_DIR:-/etl/data/output}"
+STATE_FILE="${STATE_FILE:-/etl/state/processing_state.json}"
+LOG_LEVEL="${LOG_LEVEL:-INFO}"
+FILE_PATTERN="${FILE_PATTERN:-*.xlsx}"
+
+# Create directories if they don't exist
+mkdir -p "$INPUT_DIR" "$OUTPUT_DIR" "$(dirname "$STATE_FILE")" "/etl/logs"
+
+# If no arguments provided, show help
+if [ $# -eq 0 ] || [ "$1" = "--help" ]; then
+    echo "Excel to Parquet Pipeline Docker Container"
+    echo ""
+    echo "Usage:"
+    echo "  docker run [options] excel-parquet-pipeline [pipeline-options]"
+    echo ""
+    echo "Environment Variables:"
+    echo "  INPUT_DIR      - Input directory path (default: /etl/data/input)"
+    echo "  OUTPUT_DIR     - Output directory path (default: /etl/data/output)"
+    echo "  STATE_FILE     - State file path (default: /etl/state/processing_state.json)"
+    echo "  LOG_LEVEL      - Logging level (default: INFO)"
+    echo "  FILE_PATTERN   - File pattern to match (default: *.xlsx)"
+    echo "  CRON_SCHEDULE  - Cron schedule for automatic processing"
+    echo ""
+    echo "Pipeline Options:"
+    python excel_parquet_pipeline.py --help
+    exit 0
+fi
+
+# Check if running in cron mode
+if [ -n "$CRON_SCHEDULE" ]; then
+    echo "Setting up cron job with schedule: $CRON_SCHEDULE"
+    
+    # Install cron if not available
+    apt-get update && apt-get install -y cron
+    
+    # Create cron job
+    cat > /tmp/pipeline-cron << EOF
+$CRON_SCHEDULE cd /etl && python excel_parquet_pipeline.py --input-dir "$INPUT_DIR" --output-dir "$OUTPUT_DIR" --state-file "$STATE_FILE" --log-level "$LOG_LEVEL" --pattern "$FILE_PATTERN" --clean-orphaned >> /etl/logs/cron.log 2>&1
+EOF
+    
+    # Install cron job and start cron
+    crontab /tmp/pipeline-cron
+    echo "Starting cron daemon..."
+    exec cron -f
+else
+    # Run pipeline directly
+    echo "Starting Excel to Parquet Pipeline..."
+    echo "Input directory: $INPUT_DIR"
+    echo "Output directory: $OUTPUT_DIR"
+    echo "State file: $STATE_FILE"
+    echo "Log level: $LOG_LEVEL"
+    echo "File pattern: $FILE_PATTERN"
+    echo ""
+    
+    # Execute the pipeline with provided arguments or defaults
+    if [ "$1" = "run" ]; then
+        shift
+        exec python excel_parquet_pipeline.py \
+            --input-dir "$INPUT_DIR" \
+            --output-dir "$OUTPUT_DIR" \
+            --state-file "$STATE_FILE" \
+            --log-level "$LOG_LEVEL" \
+            --pattern "$FILE_PATTERN" \
+            "$@"
+    else
+        # Pass all arguments to the pipeline script
+        exec python excel_parquet_pipeline.py "$@"
+    fi
+fi

@@ -1,0 +1,72 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# data
+data/
+*.json
+*.parquet
+*.xls
+*.xlsx
+*.csv
+*.tsv
+*.jsonl
+
+# logs
+logs/
+*.log
+
+# databases
+duckdb/
+*.db
+*.duckdb
+*.sqlite
+*.sqlite3
+*.db-journal
+
+
+
+# dbt
+target/
+logs/
+dbt_packages/
+manifest.json
+run_results.json
+catalog.json
+sources.json
+*.db
+*.sqlite
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+
+# Misc
+*.bak
+*.tmp
+*.lock
+*.orig
+*.coverage
+coverage.xml
+htmlcov/
+.cache/
+.mypy_cache/
+pytest_cache/

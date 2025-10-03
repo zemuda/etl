@@ -1,0 +1,24 @@
+# Dockerfile.watcher
+FROM python:3.11-slim
+
+# Install watchdog and docker client
+RUN pip install --no-cache-dir watchdog docker
+
+# Install docker CLI
+RUN apt-get update && apt-get install -y \
+    curl \
+    && curl -fsSL https://get.docker.com -o get-docker.sh \
+    && sh get-docker.sh \
+    && rm get-docker.sh \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /etl
+
+# Copy watcher script
+COPY file_watcher.py .
+
+# Set environment variables
+ENV WATCH_DIR=/etl/data/input
+ENV PIPELINE_CONTAINER=excel-parquet-pipeline
+
+CMD ["python", "file_watcher.py"]

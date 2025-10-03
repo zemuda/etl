@@ -1,0 +1,535 @@
+# Dockerfile
+FROM python:3.11-slim as builder
+
+# Set build arguments
+ARG BUILDPLATFORM
+ARG TARGETPLATFORM
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies for building
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    libffi-dev \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Create virtual environment and install dependencies
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Upgrade pip and install requirements
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Production stage
+FROM python:3.11-slim as production
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:$PATH" \
+    PIPELINE_HOME="/app"
+
+# Create non-root user
+RUN groupadd -r pipeline && useradd -r -g pipeline pipeline
+
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy virtual environment from builder stage
+COPY --from=builder /opt/venv /opt/venv
+
+# Set working directory
+WORKDIR /app
+
+# Copy application code
+COPY excel_parquet_pipeline.py .
+COPY entrypoint.sh .
+
+# Create necessary directories
+RUN mkdir -p /app/data/input /app/data/output /app/logs /app/state
+
+# Set permissions
+RUN chmod +x entrypoint.sh && \
+    chown -R pipeline:pipeline /app
+
+# Switch to non-root user
+USER pipeline
+
+# Expose volume mount points
+VOLUME ["/app/data/input", "/app/data/output", "/app/logs", "/app/state"]
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import sys; sys.exit(0)"
+
+# Default entrypoint
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["--help"]
+
+---
+
+# requirements.txt
+pandas==2.1.4
+pyarrow==14.0.2
+openpyxl==3.1.2
+xlrd==2.0.1
+fastparquet==2023.10.1
+
+---
+
+# entrypoint.sh
+#!/bin/bash
+
+set -e
+
+# Function to handle shutdown gracefully
+cleanup() {
+    echo "Shutting down pipeline..."
+    exit 0
+}
+
+# Trap SIGTERM and SIGINT
+trap cleanup SIGTERM SIGINT
+
+# Set default values
+INPUT_DIR="${INPUT_DIR:-/app/data/input}"
+OUTPUT_DIR="${OUTPUT_DIR:-/app/data/output}"
+STATE_FILE="${STATE_FILE:-/app/state/processing_state.json}"
+LOG_LEVEL="${LOG_LEVEL:-INFO}"
+FILE_PATTERN="${FILE_PATTERN:-*.xlsx}"
+
+# Create directories if they don't exist
+mkdir -p "$INPUT_DIR" "$OUTPUT_DIR" "$(dirname "$STATE_FILE")" "/app/logs"
+
+# If no arguments provided, show help
+if [ $# -eq 0 ] || [ "$1" = "--help" ]; then
+    echo "Excel to Parquet Pipeline Docker Container"
+    echo ""
+    echo "Usage:"
+    echo "  docker run [options] excel-parquet-pipeline [pipeline-options]"
+    echo ""
+    echo "Environment Variables:"
+    echo "  INPUT_DIR      - Input directory path (default: /app/data/input)"
+    echo "  OUTPUT_DIR     - Output directory path (default: /app/data/output)"
+    echo "  STATE_FILE     - State file path (default: /app/state/processing_state.json)"
+    echo "  LOG_LEVEL      - Logging level (default: INFO)"
+    echo "  FILE_PATTERN   - File pattern to match (default: *.xlsx)"
+    echo "  CRON_SCHEDULE  - Cron schedule for automatic processing"
+    echo ""
+    echo "Pipeline Options:"
+    python excel_parquet_pipeline.py --help
+    exit 0
+fi
+
+# Check if running in cron mode
+if [ -n "$CRON_SCHEDULE" ]; then
+    echo "Setting up cron job with schedule: $CRON_SCHEDULE"
+    
+    # Create cron job
+    cat > /tmp/pipeline-cron << EOF
+$CRON_SCHEDULE cd /app && python excel_parquet_pipeline.py --input-dir "$INPUT_DIR" --output-dir "$OUTPUT_DIR" --state-file "$STATE_FILE" --log-level "$LOG_LEVEL" --pattern "$FILE_PATTERN" --clean-orphaned >> /app/logs/cron.log 2>&1
+EOF
+    
+    # Install cron job and start cron
+    crontab /tmp/pipeline-cron
+    echo "Starting cron daemon..."
+    exec cron -f
+else
+    # Run pipeline directly
+    echo "Starting Excel to Parquet Pipeline..."
+    echo "Input directory: $INPUT_DIR"
+    echo "Output directory: $OUTPUT_DIR"
+    echo "State file: $STATE_FILE"
+    echo "Log level: $LOG_LEVEL"
+    echo "File pattern: $FILE_PATTERN"
+    echo ""
+    
+    # Execute the pipeline with provided arguments or defaults
+    if [ "$1" = "run" ]; then
+        shift
+        exec python excel_parquet_pipeline.py \
+            --input-dir "$INPUT_DIR" \
+            --output-dir "$OUTPUT_DIR" \
+            --state-file "$STATE_FILE" \
+            --log-level "$LOG_LEVEL" \
+            --pattern "$FILE_PATTERN" \
+            "$@"
+    else
+        # Pass all arguments to the pipeline script
+        exec python excel_parquet_pipeline.py "$@"
+    fi
+fi
+
+---
+
+# docker-compose.yml
+version: '3.8'
+
+services:
+  excel-parquet-pipeline:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: excel-parquet-pipeline
+    restart: unless-stopped
+    environment:
+      - INPUT_DIR=/app/data/input
+      - OUTPUT_DIR=/app/data/output
+      - STATE_FILE=/app/state/processing_state.json
+      - LOG_LEVEL=INFO
+      - FILE_PATTERN=*.xlsx
+      # - CRON_SCHEDULE=0 */6 * * *  # Run every 6 hours
+    volumes:
+      - ./data/input:/app/data/input
+      - ./data/output:/app/data/output
+      - ./logs:/app/logs
+      - ./state:/app/state
+    command: ["run", "--clean-orphaned"]
+    
+  # Optional: Add a file watcher service for real-time processing
+  file-watcher:
+    build: 
+      context: .
+      dockerfile: Dockerfile.watcher
+    container_name: excel-file-watcher
+    restart: unless-stopped
+    environment:
+      - WATCH_DIR=/app/data/input
+      - PIPELINE_CONTAINER=excel-parquet-pipeline
+    volumes:
+      - ./data/input:/app/data/input
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - excel-parquet-pipeline
+    profiles:
+      - watcher
+
+  # Optional: Monitoring service
+  pipeline-monitor:
+    image: prom/prometheus:latest
+    container_name: pipeline-monitor
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    profiles:
+      - monitoring
+
+volumes:
+  prometheus_data:
+
+---
+
+# Dockerfile.watcher
+FROM python:3.11-slim
+
+# Install watchdog and docker client
+RUN pip install --no-cache-dir watchdog docker
+
+# Install docker CLI
+RUN apt-get update && apt-get install -y \
+    curl \
+    && curl -fsSL https://get.docker.com -o get-docker.sh \
+    && sh get-docker.sh \
+    && rm get-docker.sh \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy watcher script
+COPY file_watcher.py .
+
+# Set environment variables
+ENV WATCH_DIR=/app/data/input
+ENV PIPELINE_CONTAINER=excel-parquet-pipeline
+
+CMD ["python", "file_watcher.py"]
+
+---
+
+# file_watcher.py
+#!/usr/bin/env python3
+"""
+File watcher service to trigger pipeline on new Excel files
+"""
+
+import os
+import time
+import logging
+from pathlib import Path
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+import docker
+
+# Setup logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+class ExcelFileHandler(FileSystemEventHandler):
+    """Handle Excel file events"""
+    
+    def __init__(self, pipeline_container):
+        self.pipeline_container = pipeline_container
+        self.docker_client = docker.from_env()
+        self.processing_delay = 30  # Wait 30 seconds before processing
+        
+    def on_created(self, event):
+        if not event.is_directory:
+            self.handle_file_event(event.src_path, "created")
+    
+    def on_modified(self, event):
+        if not event.is_directory:
+            self.handle_file_event(event.src_path, "modified")
+    
+    def handle_file_event(self, file_path, event_type):
+        """Handle file events for Excel files"""
+        path = Path(file_path)
+        
+        # Check if it's an Excel file
+        if path.suffix.lower() in ['.xlsx', '.xls']:
+            logger.info(f"Excel file {event_type}: {file_path}")
+            
+            # Wait a bit to ensure file is completely written
+            time.sleep(self.processing_delay)
+            
+            try:
+                # Trigger pipeline processing
+                container = self.docker_client.containers.get(self.pipeline_container)
+                
+                # Execute pipeline command in the container
+                result = container.exec_run([
+                    "python", "excel_parquet_pipeline.py",
+                    "--input-dir", "/app/data/input",
+                    "--output-dir", "/app/data/output",
+                    "--state-file", "/app/state/processing_state.json",
+                    "--log-level", "INFO",
+                    "--clean-orphaned"
+                ])
+                
+                if result.exit_code == 0:
+                    logger.info(f"Pipeline triggered successfully for {file_path}")
+                else:
+                    logger.error(f"Pipeline execution failed: {result.output.decode()}")
+                    
+            except Exception as e:
+                logger.error(f"Error triggering pipeline: {e}")
+
+def main():
+    watch_dir = os.getenv('WATCH_DIR', '/app/data/input')
+    pipeline_container = os.getenv('PIPELINE_CONTAINER', 'excel-parquet-pipeline')
+    
+    logger.info(f"Starting file watcher for directory: {watch_dir}")
+    logger.info(f"Pipeline container: {pipeline_container}")
+    
+    # Create watch directory if it doesn't exist
+    Path(watch_dir).mkdir(parents=True, exist_ok=True)
+    
+    # Setup file watcher
+    event_handler = ExcelFileHandler(pipeline_container)
+    observer = Observer()
+    observer.schedule(event_handler, watch_dir, recursive=True)
+    
+    # Start watching
+    observer.start()
+    logger.info("File watcher started")
+    
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        logger.info("Stopping file watcher...")
+        observer.stop()
+    
+    observer.join()
+    logger.info("File watcher stopped")
+
+if __name__ == "__main__":
+    main()
+
+---
+
+# docker-compose.override.yml
+version: '3.8'
+
+# Development overrides
+services:
+  excel-parquet-pipeline:
+    build:
+      target: production
+    environment:
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./excel_parquet_pipeline.py:/app/excel_parquet_pipeline.py
+    command: ["run", "--clean-orphaned", "--log-level", "DEBUG"]
+
+---
+
+# .dockerignore
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+data/
+logs/
+state/
+*.log
+processing_state.json
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+
+---
+
+# Makefile
+.PHONY: build run stop clean logs shell test
+
+# Variables
+IMAGE_NAME = excel-parquet-pipeline
+CONTAINER_NAME = excel-parquet-pipeline
+VERSION ?= latest
+
+# Build the Docker image
+build:
+	docker build -t $(IMAGE_NAME):$(VERSION) .
+
+# Build with no cache
+build-clean:
+	docker build --no-cache -t $(IMAGE_NAME):$(VERSION) .
+
+# Run with docker-compose
+run:
+	docker-compose up -d
+
+# Run with file watcher
+run-with-watcher:
+	docker-compose --profile watcher up -d
+
+# Run with monitoring
+run-with-monitoring:
+	docker-compose --profile monitoring up -d
+
+# Run everything
+run-all:
+	docker-compose --profile watcher --profile monitoring up -d
+
+# Stop all services
+stop:
+	docker-compose down
+
+# View logs
+logs:
+	docker-compose logs -f
+
+# View pipeline logs specifically
+logs-pipeline:
+	docker-compose logs -f excel-parquet-pipeline
+
+# Shell into container
+shell:
+	docker-compose exec excel-parquet-pipeline /bin/bash
+
+# Clean up everything
+clean:
+	docker-compose down -v
+	docker system prune -f
+	docker volume prune -f
+
+# Run a one-time processing job
+process:
+	docker-compose run --rm excel-parquet-pipeline run --clean-orphaned
+
+# Run in development mode
+dev:
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
+
+# Test the pipeline
+test:
+	docker-compose run --rm excel-parquet-pipeline --help
+
+# Check status
+status:
+	docker-compose ps
+
+# Update and restart
+update: stop build run
+
+# Show resource usage
+stats:
+	docker stats $(CONTAINER_NAME)

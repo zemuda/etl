@@ -1,0 +1,67 @@
+2025-09-17 17:18:24,831 - __main__ - INFO - Found 11 Excel files to process
+2025-09-17 17:18:24,877 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_01_15_january_2025.xls
+2025-09-17 17:18:26,180 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_01_15_january_2025.xls with 1 sheets
+2025-09-17 17:18:28,045 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\summarized\2025\january\sumci_01_15_january_2025_nextech.parquet
+2025-09-17 17:18:28,119 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_15_31_january_2025.xls
+2025-09-17 17:18:29,135 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_15_31_january_2025.xls with 1 sheets
+2025-09-17 17:18:30,913 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\summarized\2025\january\sumci_15_31_january_2025_nextech.parquet
+2025-09-17 17:18:30,986 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_01_05_january_2025.xls
+2025-09-17 17:18:34,669 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_01_05_january_2025.xls with 1 sheets
+2025-09-17 17:18:40,524 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_01_05_january_2025_nextech.parquet
+2025-09-17 17:18:40,687 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_06_08_january_2025.xls
+2025-09-17 17:18:44,356 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_06_08_january_2025.xls with 1 sheets
+2025-09-17 17:18:50,208 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_06_08_january_2025_nextech.parquet
+2025-09-17 17:18:50,367 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_09_11_january_2025.xls
+2025-09-17 17:18:54,020 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_09_11_january_2025.xls with 1 sheets
+2025-09-17 17:18:59,304 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_09_11_january_2025_nextech.parquet
+2025-09-17 17:18:59,453 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_12_15_january_2025.xls
+2025-09-17 17:19:02,746 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_12_15_january_2025.xls with 1 sheets
+2025-09-17 17:19:07,683 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_12_15_january_2025_nextech.parquet
+2025-09-17 17:19:07,841 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_16_18_january_2025.xls
+2025-09-17 17:19:10,950 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_16_18_january_2025.xls with 1 sheets
+2025-09-17 17:19:15,548 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_16_18_january_2025_nextech.parquet
+2025-09-17 17:19:15,704 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_19_22_january_2025.xls
+2025-09-17 17:19:19,421 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_19_22_january_2025.xls with 1 sheets
+2025-09-17 17:19:25,256 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_19_22_january_2025_nextech.parquet
+2025-09-17 17:19:25,396 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_23_25_january_2025.xls
+2025-09-17 17:19:28,326 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_23_25_january_2025.xls with 1 sheets
+2025-09-17 17:19:33,430 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_23_25_january_2025_nextech.parquet
+2025-09-17 17:19:33,557 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_27_29_january_2025.xls
+2025-09-17 17:19:37,071 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_27_29_january_2025.xls with 1 sheets
+2025-09-17 17:19:42,587 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_27_29_january_2025_nextech.parquet
+2025-09-17 17:19:42,741 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_30_31_january_2025.xls
+2025-09-17 17:19:44,821 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_30_31_january_2025.xls with 1 sheets
+2025-09-17 17:19:47,920 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_30_31_january_2025_nextech.parquet
+2025-09-18 16:45:38,541 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_01_15_january_2025.xls
+2025-09-18 16:45:40,965 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_01_15_january_2025.xls has 17567 total rows
+2025-09-18 16:45:43,918 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\summarized\2025\january\sumci_01_15_january_2025_nextech.parquet (17567 rows)
+2025-09-18 16:45:43,985 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_15_31_january_2025.xls
+2025-09-18 16:45:46,310 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\summarized\2025\january\sumci_15_31_january_2025.xls has 19028 total rows
+2025-09-18 16:45:49,011 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\summarized\2025\january\sumci_15_31_january_2025_nextech.parquet (19028 rows)
+2025-09-18 16:45:49,081 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_01_05_january_2025.xls
+2025-09-18 16:45:57,895 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_01_05_january_2025.xls has 45226 total rows
+2025-09-18 16:46:07,733 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_01_05_january_2025_nextech.parquet (45226 rows)
+2025-09-18 16:46:07,904 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_06_08_january_2025.xls
+2025-09-18 16:46:16,300 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_06_08_january_2025.xls has 42422 total rows
+2025-09-18 16:46:25,581 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_06_08_january_2025_nextech.parquet (42422 rows)
+2025-09-18 16:46:25,753 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_09_11_january_2025.xls
+2025-09-18 16:46:32,811 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_09_11_january_2025.xls has 36947 total rows
+2025-09-18 16:46:40,979 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_09_11_january_2025_nextech.parquet (36947 rows)
+2025-09-18 16:46:41,261 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_12_15_january_2025.xls
+2025-09-18 16:46:47,771 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_12_15_january_2025.xls has 36499 total rows
+2025-09-18 16:46:55,376 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_12_15_january_2025_nextech.parquet (36499 rows)
+2025-09-18 16:46:55,520 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_16_18_january_2025.xls
+2025-09-18 16:47:02,452 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_16_18_january_2025.xls has 35982 total rows
+2025-09-18 16:47:09,962 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_16_18_january_2025_nextech.parquet (35982 rows)
+2025-09-18 16:47:10,119 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_19_22_january_2025.xls
+2025-09-18 16:47:17,389 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_19_22_january_2025.xls has 39830 total rows
+2025-09-18 16:47:25,644 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_19_22_january_2025_nextech.parquet (39830 rows)
+2025-09-18 16:47:25,820 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_23_25_january_2025.xls
+2025-09-18 16:47:32,486 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_23_25_january_2025.xls has 35111 total rows
+2025-09-18 16:47:39,713 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_23_25_january_2025_nextech.parquet (35111 rows)
+2025-09-18 16:47:39,872 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_27_29_january_2025.xls
+2025-09-18 16:47:46,810 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_27_29_january_2025.xls has 40235 total rows
+2025-09-18 16:47:55,425 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_27_29_january_2025_nextech.parquet (40235 rows)
+2025-09-18 16:47:55,586 - __main__ - INFO - Processing C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_30_31_january_2025.xls
+2025-09-18 16:48:00,046 - __main__ - INFO - Excel file C:\etl\data\input\sales\cash_invoices\detailed\2025\january\detci_30_31_january_2025.xls has 22772 total rows
+2025-09-18 16:48:04,950 - __main__ - INFO - Converted sheet 'nextech' to C:\etl\data\output\sales\cash_invoices\detailed\2025\january\detci_30_31_january_2025_nextech.parquet (22772 rows)

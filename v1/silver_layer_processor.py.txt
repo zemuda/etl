@@ -1,0 +1,43 @@
+# Process files with SQLite logging
+python silver_layer_processor.py --bronze-dir ./bronze --silver-dir ./silver
+
+# Show processing statistics
+python silver_layer_processor.py --show-stats --stats-days 30
+
+# Clean orphaned files
+python silver_layer_processor.py --bronze-dir ./bronze --silver-dir ./silver --clean-orphaned
+
+The updated script now includes comprehensive SQLite logging with the following features:
+
+SQLite Database Schema
+processing_logs - Detailed log of all processing activities
+
+Timestamp, log level, file path, operation, message
+
+Success status, duration, and additional details
+
+file_processing - Records of each file processed
+
+Input/output file paths, hash, processing time
+
+Row/column counts, transformations applied, status
+
+transformation_stats - Statistics on transformations applied
+
+Transformation type, count applied, file context
+
+Key Features Added
+Comprehensive Logging: Every operation is logged to SQLite with timestamps
+
+Performance Tracking: Processing times for each file and operation
+
+Transformation Analytics: Detailed stats on what transformations were applied
+
+Error Tracking: Complete error logging with stack traces
+
+Statistics Reporting: Built-in functions to get processing statistics
+
+Queryable Data: All logs are stored in a structured database for easy querying
+
+The SQLite logging provides a complete audit trail of all processing activities, making it easy to monitor, debug, and analyze the silver layer processing pipeline.
+

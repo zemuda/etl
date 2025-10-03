@@ -1,0 +1,11 @@
+-- Get recent errors
+SELECT * FROM pipeline_logs WHERE level = 'ERROR' ORDER BY timestamp DESC;
+
+-- Get processing statistics by day
+SELECT DATE(timestamp) as day, 
+       COUNT(*) as total_operations,
+       SUM(CASE WHEN success THEN 1 ELSE 0 END) as success_count,
+       AVG(duration_ms) as avg_duration
+FROM pipeline_logs 
+GROUP BY DATE(timestamp)
+ORDER BY day DESC;

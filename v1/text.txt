@@ -1,0 +1,7 @@
+docker run --rm \
+  -v $(pwd)/data/input:/etl/data/input \
+  -v $(pwd)/data/output:/etl/data/output \
+  -v $(pwd)/logs:/etl/logs \
+  -v $(pwd)/state:/etl/state \
+  -e LOG_LEVEL=INFO \
+  excel-parquet-pipeline run --clean-orphaned

@@ -1,0 +1,81 @@
+[0m12:31:35.523544 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AC44FFC440>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AC42C65D10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AC46027C50>]}
+
+
+============================== 12:31:35.580156 | ea204624-5e38-4e18-a64c-a6fc2603894f ==============================
+[0m12:31:35.580156 [info ] [MainThread]: Running with dbt=1.10.13
+[0m12:31:35.591108 [debug] [MainThread]: running dbt with arguments {'partial_parse': 'True', 'write_json': 'True', 'send_anonymous_usage_stats': 'True', 'use_colors': 'True', 'cache_selected_only': 'False', 'target_path': 'None', 'version_check': 'True', 'invocation_command': 'dbt init', 'log_format': 'default', 'warn_error': 'None', 'introspect': 'True', 'debug': 'False', 'log_cache_events': 'False', 'fail_fast': 'False', 'no_print': 'None', 'empty': 'None', 'use_experimental_parser': 'False', 'quiet': 'False', 'printer_width': '80', 'log_path': 'logs', 'indirect_selection': 'eager', 'profiles_dir': 'C:\\Users\\Hello\\.dbt', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])'}
+[0m12:31:35.702713 [info ] [MainThread]: Creating dbt configuration folder at C:\Users\Hello\.dbt
+[0m12:31:53.648751 [debug] [MainThread]: Starter project path: C:\etl\venv\Lib\site-packages\dbt\include\starter_project
+[0m12:31:53.752008 [info ] [MainThread]: 
+Your new dbt project "pharma" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m12:31:53.756134 [info ] [MainThread]: Setting up your profile.
+[0m12:32:02.177096 [error] [MainThread]: Encountered an error:
+
+[0m12:32:02.193217 [error] [MainThread]: Traceback (most recent call last):
+  File "C:\etl\venv\Lib\site-packages\dbt\cli\requires.py", line 178, in wrapper
+    result, success = func(*args, **kwargs)
+                      ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\etl\venv\Lib\site-packages\dbt\cli\requires.py", line 128, in wrapper
+    return func(*args, **kwargs)
+  File "C:\etl\venv\Lib\site-packages\dbt\cli\main.py", line 483, in init
+    results = task.run()
+  File "C:\etl\venv\Lib\site-packages\dbt\task\init.py", line 346, in run
+    self.setup_profile(profile_name)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\etl\venv\Lib\site-packages\dbt\task\init.py", line 261, in setup_profile
+    adapter = self.ask_for_adapter_choice()
+  File "C:\etl\venv\Lib\site-packages\dbt\task\init.py", line 242, in ask_for_adapter_choice
+    numeric_choice = click.prompt(prompt_msg, type=click.INT)
+  File "C:\etl\venv\Lib\site-packages\click\termui.py", line 168, in prompt
+    value = prompt_func(prompt)
+  File "C:\etl\venv\Lib\site-packages\click\termui.py", line 151, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m12:32:02.207982 [debug] [MainThread]: Command `dbt init` failed at 12:32:02.207532 after 27.31 seconds
+[0m12:32:02.209347 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AC460B96E0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AC460D3650>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AC45EE5D00>]}
+[0m12:32:02.210432 [debug] [MainThread]: Flushing usage events
+[0m12:32:04.734788 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m12:32:22.200302 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001A34EB88440>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001A34C7E5D10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001A34FBB7D90>]}
+
+
+============================== 12:32:22.212774 | 69870c33-b36a-4040-98f0-bd67db9007f7 ==============================
+[0m12:32:22.212774 [info ] [MainThread]: Running with dbt=1.10.13
+[0m12:32:22.215574 [debug] [MainThread]: running dbt with arguments {'partial_parse': 'True', 'write_json': 'True', 'send_anonymous_usage_stats': 'True', 'warn_error': 'None', 'cache_selected_only': 'False', 'target_path': 'None', 'version_check': 'True', 'invocation_command': 'dbt init', 'log_format': 'default', 'use_colors': 'True', 'introspect': 'True', 'debug': 'False', 'printer_width': '80', 'fail_fast': 'False', 'no_print': 'None', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'log_cache_events': 'False', 'log_path': 'logs', 'indirect_selection': 'eager', 'profiles_dir': 'C:\\Users\\Hello\\.dbt', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'static_parser': 'True'}
+[0m12:32:51.017307 [debug] [MainThread]: Starter project path: C:\etl\venv\Lib\site-packages\dbt\include\starter_project
+[0m12:32:51.089227 [info ] [MainThread]: 
+Your new dbt project "pharma_etl_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m12:32:51.096910 [info ] [MainThread]: Setting up your profile.
+[0m12:32:54.998106 [info ] [MainThread]: Profile pharma_etl_dbt written to C:\Users\Hello\.dbt\profiles.yml using target's sample configuration. Once updated, you'll be able to start developing with dbt.
+[0m12:32:55.001824 [debug] [MainThread]: Command `dbt init` succeeded at 12:32:55.001465 after 33.11 seconds
+[0m12:32:55.002755 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001A34FC47100>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001A350CEFD10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001A350D5CAF0>]}
+[0m12:32:55.003972 [debug] [MainThread]: Flushing usage events
+[0m12:32:59.560094 [debug] [MainThread]: An error was encountered while trying to flush usage events

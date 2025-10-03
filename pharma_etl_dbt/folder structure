@@ -1,0 +1,176 @@
+pharma_dbt/
+├── models/
+│   ├── staging/
+│   │   ├── bronze/
+│   │   │   ├── _bronze__sources.yml
+│   │   │   ├── sales/
+│   │   │   │   ├── stg_bronze__sales_cash_invoices_detailed.sql
+│   │   │   │   ├── stg_bronze__sales_cash_invoices_summarized.sql
+│   │   │   │   ├── stg_bronze__sales_credit_notes_detailed.sql
+│   │   │   │   └── stg_bronze__sales_credit_notes_summarized.sql
+│   │   │   ├── inventory/
+│   │   │   │   ├── stg_bronze__inventory_stock_master.sql
+│   │   │   │   ├── stg_bronze__inventory_movements.sql
+│   │   │   │   └── stg_bronze__inventory_procurement.sql
+│   │   │   ├── suppliers/
+│   │   │   │   ├── stg_bronze__supplier_invoices_detailed.sql
+│   │   │   │   ├── stg_bronze__supplier_grn_detailed.sql
+│   │   │   │   └── stg_bronze__supplier_returns_detailed.sql
+│   │   │   ├── master_data/
+│   │   │   │   ├── stg_bronze__master_customers.sql
+│   │   │   │   ├── stg_bronze__master_products.sql
+│   │   │   │   ├── stg_bronze__master_suppliers.sql
+│   │   │   │   └── stg_bronze__master_branches.sql
+│   │   │   ├── scd_tracking/
+│   │   │   │   ├── stg_bronze__scd_customers.sql
+│   │   │   │   ├── stg_bronze__scd_products.sql
+│   │   │   │   └── stg_bronze__scd_suppliers.sql
+│   │   │   └── schema_evolution/
+│   │   │       ├── stg_bronze__schema_versions.sql
+│   │   │       ├── stg_bronze__column_tracking.sql
+│   │   │       └── stg_bronze__schema_changes.sql
+│   │   ├── silver/
+│   │   │   ├── sales/
+│   │   │   │   ├── cleansed/
+│   │   │   │   │   ├── sl_cleansed__sales_cash_invoices_detailed.sql
+│   │   │   │   │   ├── sl_cleansed__sales_cash_invoices_summarized.sql
+│   │   │   │   │   └── sl_cleansed__sales_credit_notes.sql
+│   │   │   │   ├── enriched/
+│   │   │   │   │   ├── sl_enriched__sales_invoices_with_customer.sql
+│   │   │   │   │   ├── sl_enriched__sales_invoices_with_product.sql
+│   │   │   │   │   └── sl_enriched__sales_branch_performance.sql
+│   │   │   │   └── validated/
+│   │   │   │       ├── sl_validated__sales_invoice_completeness.sql
+│   │   │   │       ├── sl_validated__sales_amount_consistency.sql
+│   │   │   │       └── sl_validated__sales_temporal_consistency.sql
+│   │   │   ├── inventory/
+│   │   │   │   ├── cleansed/
+│   │   │   │   │   ├── sl_cleansed__inventory_stock_master.sql
+│   │   │   │   │   └── sl_cleansed__inventory_movements.sql
+│   │   │   │   ├── enriched/
+│   │   │   │   │   ├── sl_enriched__inventory_stock_with_products.sql
+│   │   │   │   │   └── sl_enriched__inventory_branch_levels.sql
+│   │   │   │   └── validated/
+│   │   │   │       └── sl_validated__inventory_balance_consistency.sql
+│   │   │   └── master_data/
+│   │   │       ├── cleansed/
+│   │   │       │   ├── sl_cleansed__master_customers.sql
+│   │   │       │   ├── sl_cleansed__master_products.sql
+│   │   │       │   └── sl_cleansed__master_suppliers.sql
+│   │   │       └── conformed/
+│   │   │           ├── sl_conformed__customer_master.sql
+│   │   │           ├── sl_conformed__product_master.sql
+│   │   │           └── sl_conformed__supplier_master.sql
+│   │   └── gold/
+│   │       ├── dimensions/
+│   │       │   ├── gold__dim_customers.sql
+│   │       │   ├── gold__dim_products.sql
+│   │       │   ├── gold__dim_suppliers.sql
+│   │       │   ├── gold__dim_branches.sql
+│   │       │   ├── gold__dim_date.sql
+│   │       │   └── gold__dim_time.sql
+│   │       ├── facts/
+│   │       │   ├── gold__fct_sales_invoices_detailed.sql
+│   │       │   ├── gold__fct_sales_invoices_summarized.sql
+│   │       │   ├── gold__fct_inventory_stock_current.sql
+│   │       │   ├── gold__fct_inventory_movements.sql
+│   │       │   ├── gold__fct_supplier_invoices.sql
+│   │       │   └── gold__fct_daily_sales_summary.sql
+│   │       └── marts/
+│   │           ├── sales_mart/
+│   │           │   ├── gold__mart_sales_performance.sql
+│   │           │   ├── gold__mart_sales_product_analysis.sql
+│   │           │   └── gold__mart_sales_branch_analysis.sql
+│   │           ├── inventory_mart/
+│   │           │   ├── gold__mart_inventory_turnover.sql
+│   │           │   └── gold__mart_inventory_valuation.sql
+│   │           └── supplier_mart/
+│   │               └── gold__mart_supplier_performance.sql
+│   ├── snapshots/
+│   │   ├── snp__customers_scd2.sql
+│   │   ├── snp__products_scd2.sql
+│   │   ├── snp__suppliers_scd2.sql
+│   │   ├── snp__pricing_scd2.sql
+│   │   └── snp__branch_hierarchy_scd2.sql
+│   └── audit/
+│       ├── gold__fct_data_quality_audit.sql
+│       ├── gold__fct_audit_summary_dashboard.sql
+│       └── gold__fct_compliance_monitoring.sql
+├── macros/
+│   ├── python_operations/
+│   │   ├── load_parquet_to_staging.sql
+│   │   ├── audit_data_quality.sql
+│   │   └── incremental_file_processing.sql
+│   ├── scd_tracking/
+│   │   ├── detect_scd_changes.sql
+│   │   ├── handle_schema_evolution.sql
+│   │   ├── merge_scd_records.sql
+│   │   └── generate_scd_hash.sql
+│   ├── schema_evolution/
+│   │   ├── compare_schemas.sql
+│   │   ├── evolve_table_structure.sql
+│   │   ├── migrate_historical_data.sql
+│   │   └── detect_new_columns.sql
+│   ├── data_quality/
+│   │   ├── validate_completeness.sql
+│   │   ├── validate_consistency.sql
+│   │   ├── validate_freshness.sql
+│   │   └── validate_uniqueness.sql
+│   └── utils/
+│       ├── generate_surrogate_key.sql
+│       ├── date_calculations.sql
+│       ├── financial_calculations.sql
+│       └── inventory_calculations.sql
+├── tests/
+│   ├── bronze/
+│   │   ├── test_bronze__source_freshness.sql
+│   │   ├── test_bronze__data_presence.sql
+│   │   └── test_bronze__schema_consistency.sql
+│   ├── silver/
+│   │   ├── generic/
+│   │   │   ├── test_silver__not_null.sql
+│   │   │   ├── test_silver__unique.sql
+│   │   │   └── test_silver__accepted_values.sql
+│   │   ├── sales/
+│   │   │   ├── test_sales__amount_consistency.sql
+│   │   │   ├── test_sales__date_validation.sql
+│   │   │   └── test_sales__customer_integrity.sql
+│   │   └── inventory/
+│   │       ├── test_inventory__stock_balance.sql
+│   │       └── test_inventory__movement_consistency.sql
+│   ├── gold/
+│   │   ├── test_gold__data_consistency.sql
+│   │   ├── test_gold__business_logic.sql
+│   │   └── test_gold__reconciliation.sql
+│   └── audit/
+│       ├── test_audit__completeness_threshold.sql
+│       └── test_audit__quality_metrics.sql
+├── operations/
+│   ├── load_parquet_files.py
+│   ├── data_quality_scanner.py
+│   ├── audit_logger.py
+│   ├── schema_detector.py
+│   └── scd_tracker.py
+├── analyses/
+│   ├── data_quality_investigations/
+│   │   ├── analyze_data_quality_issues.sql
+│   │   └── investigate_duplicates.sql
+│   ├── performance_analysis/
+│   │   ├── sales_performance_deep_dive.sql
+│   │   └── inventory_optimization_analysis.sql
+│   └── business_intelligence/
+│       ├── customer_360_analysis.sql
+│       └── product_performance_analysis.sql
+├── seeds/
+│   ├── dim_date.csv
+│   ├── dim_time.csv
+│   ├── product_categories.csv
+│   ├── customer_segments.csv
+│   ├── supplier_categories.csv
+│   └── branch_regions.csv
+├── target/
+├── logs/
+├── dbt_project.yml
+├── packages.yml
+├── profiles.yml
+└── README.md

@@ -1,0 +1,32 @@
+2025-09-30 15:16:26,897 - INFO - Starting Enhanced Silver Sales Layer processing with comprehensive data cleaning
+2025-09-30 15:16:53,627 - ERROR - Failed to log overall data quality: Binder Error: Referenced column "potential_duplicates_detected" not found in FROM clause!
+Candidate bindings: "credit_notes_separated", "completed_at", "started_at", "records_invalid", "source_table"
+
+LINE 7:                     SUM(potential_duplicates_detected) as total_potential_duplicates...
+                                ^
+2025-09-30 15:16:53,672 - INFO - Enhanced Silver Sales Layer processing completed successfully
+2025-09-30 16:06:16,032 - INFO - Starting Enhanced Silver Sales Layer processing with comprehensive data cleaning
+2025-09-30 16:06:16,099 - ERROR - Enhanced Silver Sales Layer processing failed: 'SilverSalesTransformerTransactional' object has no attribute '_init_silver_schema'
+2025-09-30 16:06:48,458 - INFO - Starting Enhanced Silver Sales Layer processing with comprehensive data cleaning
+2025-09-30 16:06:48,601 - INFO - Updating database schema...
+2025-09-30 16:06:48,689 - INFO - 🔄 Starting transactional data cleaning pipeline...
+2025-09-30 16:06:48,690 - INFO - 📝 NOTE: All transactional data preserved - duplicates are monitored but not removed
+2025-09-30 16:06:48,691 - INFO - 📊 Processing summarized invoices...
+2025-09-30 16:06:53,569 - INFO - Summarized Invoices: 33,786 invoices, 2,809 credit notes/zero amounts. Found 0 potential duplicates for review, 4 columns with whitespace issues
+2025-09-30 16:06:53,571 - INFO -    Found 0 potential duplicates for review, 4 columns with whitespace issues
+2025-09-30 16:06:53,572 - INFO - 📋 Processing detailed invoices...
+2025-09-30 16:07:07,784 - INFO - ✅ Detailed Invoices: 330,918 invoices, 4,106 credit notes/zero amounts
+2025-09-30 16:07:07,795 - INFO -    Found 0 potential duplicates for review, 5 columns with whitespace issues
+2025-09-30 16:07:07,799 - INFO - 📈 Creating daily sales summary...
+2025-09-30 16:07:08,126 - INFO - ✅ Daily Sales Summary: 4,746 records created
+2025-09-30 16:07:08,134 - INFO - 📊 TRANSACTIONAL DATA QUALITY METRICS:
+2025-09-30 16:07:08,135 - INFO -    Total Records Processed: 376,365
+2025-09-30 16:07:08,136 - INFO -    Valid Records: 369,450
+2025-09-30 16:07:08,137 - INFO -    Credit Notes Separated: 6,915
+2025-09-30 16:07:08,138 - INFO -    Potential Duplicates (for review): 0
+2025-09-30 16:07:08,139 - INFO -    Columns with Whitespace Issues: 9
+2025-09-30 16:07:08,150 - INFO - 🔍 DATA QUALITY ISSUES FOUND (for monitoring):
+2025-09-30 16:07:08,151 - INFO -    TRAILING_WHITESPACE: 9 issues affecting 125,513 rows
+2025-09-30 16:07:08,156 - INFO - ✅ Transactional data cleaning completed successfully!
+2025-09-30 16:07:08,163 - INFO - 💡 All transactions preserved - check data quality logs for potential issues
+2025-09-30 16:07:08,165 - INFO - Enhanced Silver Sales Layer processing completed successfully

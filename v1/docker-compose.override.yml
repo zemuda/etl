@@ -1,0 +1,13 @@
+# docker-compose.override.yml
+# version: '3.8'
+
+# Development overrides
+services:
+  excel-parquet-pipeline:
+    build:
+      target: production
+    environment:
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./excel_parquet_pipeline.py:/etl/excel_parquet_pipeline.py
+    command: ["run", "--clean-orphaned", "--log-level", "DEBUG"]

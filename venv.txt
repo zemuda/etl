@@ -1,0 +1,17 @@
+python -m venv venv
+venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
+To update the packages in your requirements.txt using Command Prompt or PowerShell, run:
+pip install --upgrade -r requirements.txt
+
+pip freeze > requirements.txt
+
+echo "# etl" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/zemuda/etl.git
+git push -u origin main

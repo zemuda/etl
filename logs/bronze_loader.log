@@ -1,0 +1,6 @@
+2025-09-24 14:58:23,301 - INFO - Starting bronze layer incremental load
+2025-09-24 14:58:50,449 - INFO - Feature sales: 11 files, 371619 rows
+2025-09-24 14:58:50,451 - INFO - Feature supplies: 0 files, 0 rows
+2025-09-24 14:58:50,452 - INFO - Feature inventory: 0 files, 0 rows
+2025-09-24 14:58:50,701 - INFO - No schema changes detected
+2025-09-24 14:58:50,701 - INFO - Bronze layer load completed successfully
