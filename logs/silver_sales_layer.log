@@ -1,7 +1,0 @@
-2025-09-24 23:18:19,335 - INFO - Starting Silver Sales Layer processing
-2025-09-24 23:18:19,619 - ERROR - Silver Sales Layer processing failed: IO Error: Cannot open file "c:\etl\duckdb\bronze_layer.db": The process cannot access the file because it is being used by another process.
-
-File is already open in 
-C:\Users\Hello\Downloads\duckdb_cli-windows-amd64\duckdb.exe (PID 8596)
-2025-09-24 23:19:07,212 - INFO - Starting Silver Sales Layer processing
-2025-09-24 23:19:19,105 - INFO - Silver Sales Layer processing completed successfully
